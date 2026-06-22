@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Site — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/all.min.css">
+<style>
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+:root {
+  --gold:       #D4AF37;
+  --gold-dark:  #B8860B;
+  --gold-soft:  #e8c84a;
+  --gold-glow:  rgba(212,175,55,.35);
+  --white:      #FFFFFF;
+  --bg:         #FFF8E7;
+  --bg2:        #FFF2D0;
+  --bg3:        #FDE8A8;
+  --ink:        #2C1A00;
+  --ink2:       #5C3D00;
+  --muted:      #9A7A3A;
+  --border:     rgba(212,175,55,.22);
+  --border-md:  rgba(212,175,55,.45);
+  --shadow:     rgba(184,134,11,.18);
+  --error:      #c0392b;
+  --success:    #27ae60;
+  --serif:      'Cinzel', serif;
+  --body:       'Lato', sans-serif;
+  --arabic:     'Amiri', serif;
+  --trans:      .3s cubic-bezier(.4,0,.2,1);
+}
+
+html, body {
+  height: 100%;
+  background: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ── Page layout — split ────────────────────────────────────── */
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   LEFT PANEL — decorative
+══════════════════════════════════════════════ */
+.left-panel {
+  position: relative;
+  background: linear-gradient(160deg, #1a0e00 0%, #2c1a00 50%, #0e0700 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 48px;
+  overflow: hidden;
+}
+
+/* Geometric Islamic pattern background */
+.pattern-layer {
+  position: absolute; inset: 0;
+  opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='0.6'%3E%3Cpolygon points='60,5 114,35 114,85 60,115 6,85 6,35'/%3E%3Cpolygon points='60,18 101,41 101,79 60,102 19,79 19,41'/%3E%3Cpolygon points='60,32 88,48 88,72 60,88 32,72 32,48'/%3E%3Cline x1='60' y1='5' x2='60' y2='115'/%3E%3Cline x1='6' y1='35' x2='114' y2='85'/%3E%3Cline x1='114' y1='35' x2='6' y2='85'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* Radial glow at centre */
+.left-panel::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Floating ornamental ring */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(212,175,55,.15);
+  pointer-events: none;
+  animation: ringPulse 8s ease-in-out infinite;
+}
+.ring-1 { width: 520px; height: 520px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
+.ring-2 { width: 380px; height: 380px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
+.ring-3 { width: 240px; height: 240px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 3s; }
+@keyframes ringPulse {
+  0%,100% { opacity: .3; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: .7; transform: translate(-50%,-50%) scale(1.04); }
+}
+
+/* Stars */
+.left-star {
+  position: absolute;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: starTwinkle var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+  opacity: 0;
+}
+@keyframes starTwinkle {
+  0%,100% { opacity: 0; }
+  50%      { opacity: .6; }
+}
+
+/* Kaaba silhouette */
+.left-kaaba {
+  position: relative; z-index: 2;
+  margin-bottom: 36px;
+  animation: kaabaBreathe 6s ease-in-out infinite;
+}
+@keyframes kaabaBreathe {
+  0%,100% { filter: drop-shadow(0 0 18px rgba(212,175,55,.3)); }
+  50%      { filter: drop-shadow(0 0 36px rgba(212,175,55,.6)); }
+}
+
+.left-title {
+  position: relative; z-index: 2;
+  font-family: var(--serif);
+  font-size: 4.3rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: .1em;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.left-bismillah {
+  position: relative; z-index: 2;
+  font-family: var(--arabic);
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  color: rgba(255,255,255,.7);
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: .04em;
+}
+.left-verse {
+  position: relative; z-index: 2;
+  max-width: 340px;
+  text-align: center;
+  font-family: var(--arabic);
+  font-size: 1rem;
+  line-height: 2;
+  color: rgba(255,255,255,.5);
+  border-top: 1px solid rgba(212,175,55,.2);
+  border-bottom: 1px solid rgba(212,175,55,.2);
+  padding: 16px 0;
+}
+.left-verse-ref {
+  position: relative; z-index: 2;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(212,175,55,.5);
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Corner ornaments */
+.corner {
+  position: absolute;
+  width: 48px; height: 48px;
+  opacity: .3;
+  pointer-events: none;
+}
+.corner-tl { top: 20px; left: 20px; border-top: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+.corner-tr { top: 20px; right: 20px; border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+.corner-bl { bottom: 20px; left: 20px; border-bottom: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+.corner-br { bottom: 20px; right: 20px; border-bottom: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+
+/* ══════════════════════════════════════════════
+   RIGHT PANEL — form
+══════════════════════════════════════════════ */
+.right-panel {
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 56px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Subtle warm texture overlay */
+.right-panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.form-wrap {
+  width: 100%; max-width: 400px;
+  position: relative; z-index: 1;
+  animation: formReveal .9s cubic-bezier(.25,.46,.45,.94) .3s both;
+}
+@keyframes formReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.form-header { text-align: center; margin-bottom: 40px; }
+.form-site-name {
+  font-family: var(--serif);
+  font-size: 1rem; font-weight: 400;
+  color: var(--muted);
+  letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.form-site-name::before, .form-site-name::after {
+  content: ''; display: block; width: 28px; height: 1px; background: var(--border-md);
+}
+.form-heading {
+  font-family: var(--serif);
+  font-size: 3.2rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: .04em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+
+}
+.form-subheading {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Tabs */
+.form-tabs {
+  display: flex; gap: 0;
+  border: 1.5px solid var(--border-md);
+  border-radius: 50px;
+  padding: 4px;
+  margin-bottom: 36px;
+  background: var(--bg2);
+}
+.form-tab {
+  flex: 1; 
+  padding: 9px 16px;
+  font-family: var(--body); 
+  font-size: 1rem; 
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none; 
+  border-radius: 50px;
+  background: transparent; 
+  color: var(--muted);
+  cursor: pointer;
+  transition: background var(--trans), color var(--trans), box-shadow var(--trans);
+}
+.form-tab.active {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: var(--white);
+  box-shadow: 0 3px 12px var(--gold-glow);
+}
+
+/* Form panels */
+.form-panel { display: none; }
+.form-panel.active {
+  display: flex; flex-direction: column; gap: 18px;
+  animation: panelIn .35s ease;
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Field */
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field-label {
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink2);
+}
+.field-input-wrap { position: relative; }
+.field-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 1rem; pointer-events: none; color: var(--muted);
+  transition: color var(--trans);
+}
+.field-input {
+  width: 100%; padding: 12px 14px 12px 42px;
+  border: 1.5px solid var(--border-md);
+  border-radius: 10px;
+  background: var(--white);
+  font-family: var(--body); font-size: .92rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--trans), box-shadow var(--trans);
+}
+.field-input::placeholder { color: rgba(154, 122, 58, 0.805); }
+.field-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,.13); }
+.field-input:focus + .field-focus-bar { transform: scaleX(1); }
+.field-input-wrap:focus-within .field-icon { color: var(--gold-dark); }
+
+/* Password toggle */
+.field-eye {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: .9rem; cursor: pointer; color: var(--muted);
+  background: none; border: none; padding: 4px;
+  transition: color var(--trans);
+  min-width: 28px; min-height: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.field-eye:hover { color: var(--gold-dark); }
+
+/* Field hint / error */
+.field-hint {
+  font-size: .72rem; color: var(--muted);
+  display: flex; align-items: center; gap: 5px;
+}
+.field-error {
+  font-size: .72rem; color: var(--error);
+  display: none; align-items: center; gap: 5px;
+}
+.field.has-error .field-input { border-color: var(--error); }
+.field.has-error .field-error { display: flex; }
+.field.has-error .field-hint  { display: none; }
+
+/* Password strength */
+.pwd-strength { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+.pwd-bars { display: flex; gap: 4px; }
+.pwd-bar {
+  flex: 1; height: 3px; border-radius: 2px;
+  background: var(--border-md);
+  transition: background .4s;
+}
+.pwd-bar.weak   { background: var(--error); }
+.pwd-bar.medium { background: var(--gold); }
+.pwd-bar.strong { background: var(--success); }
+.pwd-text { font-size: .68rem; color: var(--muted); }
+
+/* Remember / forgot row */
+.form-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.checkbox-wrap {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.checkbox-wrap input[type="checkbox"] { display: none; }
+.checkbox-box {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.5px solid var(--border-md); border-radius: 5px;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color var(--trans), background var(--trans);
+  font-size: .7rem;
+}
+.checkbox-wrap input:checked ~ .checkbox-box {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border-color: var(--gold);
+}
+.checkbox-wrap input:checked ~ .checkbox-box::after { content: '✓'; color: var(--white); }
+.checkbox-label { font-size: .78rem; color: var(--ink2); user-select: none; }
+.forgot-link {
+  font-size: .78rem; color: var(--gold-dark);
+  text-decoration: none;
+  transition: color var(--trans);
+  cursor: pointer;
+  background: none; border: none; padding: 0;
+  font-family: var(--body);
+}
+.forgot-link:hover { color: var(--gold); }
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border: none; border-radius: 10px;
+  font-family: var(--serif); font-size: .92rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transition: transform var(--trans), box-shadow var(--trans), filter var(--trans);
+  position: relative; overflow: hidden;
+}
+.btn-submit::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+  opacity: 0; transition: opacity var(--trans);
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--gold-glow); }
+.btn-submit:hover::before { opacity: 1; }
+.btn-submit:active { transform: scale(.98); }
+.btn-submit.loading { pointer-events: none; filter: brightness(.85); }
+.btn-submit .btn-spinner { display: none; }
+.btn-submit.loading .btn-spinner { display: inline-block; animation: spin .8s linear infinite; margin-right: 8px; }
+.btn-submit.loading .btn-text::after { content: '…'; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-text{
+  font-size: 1.4rem;
+}
+/* Divider */
+.form-divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--muted); font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.form-divider::before, .form-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-md);
+}
+
+/* Social buttons */
+.social-btns { display: flex; gap: 10px; }
+.btn-social {
+  flex: 1; padding: 11px 12px;
+  border: 1.5px solid var(--border-md); border-radius: 10px;
+  background: var(--white);
+  font-family: var(--body); font-size: .78rem; font-weight: 400;
+  color: var(--ink2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: border-color var(--trans), background var(--trans), color var(--trans);
+}
+.btn-social:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--bg2); }
+
+/* Terms note */
+.form-terms {
+  font-size: .7rem; color: var(--muted);
+  text-align: center; line-height: 1.6;
+}
+.form-terms a { color: var(--gold-dark); text-decoration: none; }
+.form-terms a:hover { text-decoration: underline; }
+
+/* Toast notification */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  z-index: 999;
+  background: var(--ink);
+  border: 1px solid rgba(212,175,55,.3);
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-size: .82rem; color: var(--gold);
+  letter-spacing: .06em;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  opacity: 0;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .4s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Forgot password overlay */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(44,26,0,.6);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border-md);
+  border-radius: 16px;
+  padding: 40px 36px;
+  max-width: 380px; width: 100%;
+  transform: translateY(20px) scale(.97);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+}
+.overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none;
+  font-size: 1.2rem; color: var(--muted);
+  cursor: pointer; transition: color var(--trans);
+  min-width: 32px; min-height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-icon { font-size: 3rem; text-align: center; margin-bottom: 16px; }
+.modal-title {
+  font-family: var(--serif); font-size: 1.3rem; font-weight: 700;
+  color: var(--ink); text-align: center; margin-bottom: 8px;
+}
+.modal-desc { font-size: .82rem; color: var(--muted); text-align: center; margin-bottom: 28px; line-height: 1.65; }
+
+/* Responsive */
+@media(max-width: 860px){
+  .page { grid-template-columns: 1fr; }
+  .left-panel { display: none; }
+  .right-panel { padding: 40px 28px; overflow-y: auto; }
+  html, body { overflow: auto; }
+}
+@media(max-width: 420px){
+  .right-panel { padding: 32px 20px; }
+  .social-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Toast ─────────────────────────────────────── -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ── Forgot Password Modal ─────────────────────── -->
+<div class="overlay" id="forgot-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <button class="modal-close" onclick="closeForgot()" aria-label="Close">✕</button>
+    <div class="modal-icon"><i class="fa-solid fa-gear"></i></div>
+    <h2 class="modal-title" id="modal-title">Reset Password</h2>
+    <p class="modal-desc">Enter your email and we'll send you a link to reset your password.</p>
+    <div class="field" style="margin-bottom:20px;">
+      <label class="field-label" for="forgot-email">Email Address</label>
+      <div class="field-input-wrap">
+        <span class="field-icon"><i class="fa-solid fa-envelope"></i></span>
+        <input type="email" id="forgot-email" class="field-input" placeholder="your@email.com" autocomplete="email"/>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="sendReset()">
+      <span class="btn-spinner">⟳</span>
+      <span class="btn-text">اِرسال الرابط</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── Page ───────────────────────────────────────── -->
+<div class="page">
+
+  <!-- LEFT PANEL ───────────────────────────────── -->
+  <div class="left-panel" aria-hidden="true">
+    <div class="pattern-layer"></div>
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <div id="left-stars"></div>
+
+    <!-- Kaaba SVG -->
+    <div class="left-kaaba">
+      <svg width="140" height="130" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="160" cy="268" rx="140" ry="11" fill="rgba(212,175,55,.12)"/>
+        <rect x="60" y="80" width="200" height="180" rx="4" fill="#111"/>
+        <rect x="60" y="80" width="200" height="180" rx="4" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity=".7"/>
+        <rect x="60" y="80" width="200" height="28" rx="4" fill="#1a0e00"/>
+        <rect x="60" y="96" width="200" height="16" fill="none" stroke="#D4AF37" stroke-width=".8" opacity=".6"/>
+        <text x="160" y="110" text-anchor="middle" font-family="serif" font-size="9" fill="#D4AF37" opacity=".7">لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ</text>
+        <rect x="128" y="178" width="44" height="82" rx="3" fill="#2a1500"/>
+        <rect x="128" y="178" width="44" height="82" rx="3" fill="none" stroke="#D4AF37" stroke-width="1.2" opacity=".8"/>
+        <rect x="134" y="184" width="32" height="70" rx="2" fill="none" stroke="#D4AF37" stroke-width=".6" opacity=".5"/>
+        <circle cx="160" cy="220" r="3" fill="#D4AF37" opacity=".8"/>
+        <rect x="56"  y="76"  width="10" height="188" rx="3" fill="#1a0e00" stroke="#D4AF37" stroke-width=".6" opacity=".6"/>
+        <rect x="254" y="76"  width="10" height="188" rx="3" fill="#1a0e00" stroke="#D4AF37" stroke-width=".6" opacity=".6"/>
+        <rect x="128" y="178" width="44" height="4" rx="2" fill="#D4AF37" opacity=".25"/>
+      </svg>
+    </div>
+
+    <h1 class="left-title">مُصَلِّي</h1>
+    <p class="left-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+    <p class="left-verse">وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ ۖ أُجِيبُ دَعْوَةَ الدَّاعِ إِذَا دَعَانِ</p>
+    <p class="left-verse-ref">— Surah Al-Baqarah 2:186</p>
+  </div>
+
+  <!-- RIGHT PANEL ──────────────────────────────── -->
+  <div class="right-panel">
+    <div class="form-wrap">
+
+      <!-- Header -->
+      <div class="form-header">
+        <div class="form-site-name">Welcome Back</div>
+        <h2 class="form-heading" id="form-heading">مرحباَ بعودتك</h2>
+        <p class="form-subheading" id="form-subheading">نرجو ادخال البيانات الصحيحة</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="form-tabs" role="tablist">
+        <button class="form-tab active" role="tab" aria-selected="true"  id="tab-login"    onclick="switchTab('login')"   aria-controls="panel-login">تسجيل دخول</button>
+        <button class="form-tab"        role="tab" aria-selected="false" id="tab-register" onclick="switchTab('register')" aria-controls="panel-register">أنشاء حساب</button>
+      </div>
+
+      <!-- ── LOGIN PANEL ────────────────────────── -->
+      <div class="form-panel active" id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+
+        <div class="field" id="field-login-email">
+          <label class="field-label" for="login-email">Email Address</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="login-email" class="field-input"
+              placeholder="your@email.com"
+              autocomplete="email"
+              oninput="clearError('field-login-email')"/>
+          </div>
+          <span class="field-error">⚠ Please enter a valid email address.</span>
+        </div>
+
+        <div class="field" id="field-login-password">
+          <label class="field-label" for="login-password">Password</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="text" id="login-password" class="field-input"
+              placeholder="Enter your password"
+              autocomplete="new-password"
+              onfocus="this.type='password'"
+              oninput="clearError('field-login-password')"/>
+            <button class="field-eye" type="button" onclick="togglePwd(this)" aria-label="Toggle password visibility"><i id="eye-icon" class="fa-solid fa-eye"></i></button>
+          </div>
+          <span class="field-error">⚠ Password must be at least 6 characters.</span>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="remember-me"/>
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label">Remember me</span>
+          </label>
+          <button class="forgot-link" type="button" onclick="openForgot()">Forgot password?</button>
+        </div>
+
+        <button class="btn-submit" id="btn-login" onclick="handleLogin()">
+          <span class="btn-spinner">⟳</span>
+          <span class="btn-text">تسجيل الدخول</span>
+        </button>
+
+        <div class="form-divider">or</div>
+
+        <div class="social-btns">
+          <button class="btn-social" onclick="showToast('Google sign-in coming soon')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          <button class="btn-social" onclick="showToast('Apple sign-in coming soon')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            Apple
+          </button>
+        </div>
+
+      </div><!-- /panel-login -->
+
+      <!-- ── REGISTER PANEL ─────────────────────── -->
+      <div class="form-panel" id="panel-register" role="tabpanel" aria-labelledby="tab-register">
+
+        <div class="field" id="field-reg-name">
+          <label class="field-label" for="reg-name">Full Name</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+            <input type="text" id="reg-name" class="field-input"
+              placeholder="Your name"
+              autocomplete="name"
+              oninput="clearError('field-reg-name')"/>
+          </div>
+          <span class="field-error">⚠ Please enter your name.</span>
+        </div>
+
+        <div class="field" id="field-reg-email">
+          <label class="field-label" for="reg-email">Email Address</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="reg-email" class="field-input"
+              placeholder="your@email.com"
+              autocomplete="email"
+              oninput="clearError('field-reg-email')"/>
+          </div>
+          <span class="field-error">⚠ Please enter a valid email address.</span>
+        </div>
+
+        <div class="field" id="field-reg-password">
+          <label class="field-label" for="reg-password">Password</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="reg-password" class="field-input"
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+              oninput="checkStrength(this.value)"/>
+            <button class="field-eye" type="button" onclick="togglePwd(this)" aria-label="Toggle password visibility"><i id="eye-icon" class="fa-solid fa-eye"></i></button>
+          </div>
+          <div class="pwd-strength" id="pwd-strength">
+            <div class="pwd-bars">
+              <div class="pwd-bar" id="bar-1"></div>
+              <div class="pwd-bar" id="bar-2"></div>
+              <div class="pwd-bar" id="bar-3"></div>
+              <div class="pwd-bar" id="bar-4"></div>
+            </div>
+            <span class="pwd-text" id="pwd-text">Enter a password</span>
+          </div>
+          <span class="field-error">⚠ Password must be at least 6 characters.</span>
+        </div>
+
+        <div class="field" id="field-reg-confirm">
+          <label class="field-label" for="reg-confirm">Confirm Password</label>
+          <div class="field-input-wrap">
+            <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="reg-confirm" class="field-input"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              oninput="clearError('field-reg-confirm')"/>
+            <button class="field-eye" type="button" onclick="togglePwd(this)" aria-label="Toggle password visibility"><i id="eye-icon" class="fa-solid fa-eye"></i></button>
+          </div>
+          <span class="field-error">⚠ Passwords do not match.</span>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox-wrap" id="terms-wrap">
+            <input type="checkbox" id="accept-terms" onchange="clearError('field-terms')"/>
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label">I accept the <a href="#" style="color:var(--gold-dark)">terms</a></span>
+          </label>
+        </div>
+
+        <button class="btn-submit" id="btn-register" onclick="handleRegister()">
+          <span class="btn-spinner">⟳</span>
+          <span class="btn-text">أنشاء حساب</span>
+        </button>
+
+        <p class="form-terms">
+          By registering, you agree to our
+          <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.
+        </p>
+
+      </div><!-- /panel-register -->
+
+    </div><!-- /form-wrap -->
+  </div><!-- /right-panel -->
+
+</div><!-- /page -->
+
+<script>
+/* ── Stars ───────────────────────────────── */
+(function(){
+  const c = document.getElementById('left-stars');
+  for(let i=0;i<40;i++){
+    const s=document.createElement('div'); s.className='left-star';
+    const sz=Math.random()*2+.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*5}s;--delay:${Math.random()*6}s`;
+    c.appendChild(s);
+  }
+})();
+
+/* ── Tab switching ───────────────────────── */
+function switchTab(tab){
+  ['login','register'].forEach(t=>{
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+    const btn = document.getElementById('tab-'+t);
+    btn.classList.toggle('active', t===tab);
+    btn.setAttribute('aria-selected', t===tab);
+  });
+  const isLogin = tab==='login';
+  document.getElementById('form-heading').textContent    = isLogin ? 'مرحباَ بعودتك'      : 'أنشاء حساب';
+  document.getElementById('form-subheading').textContent = isLogin ? 'نرجو ادخال البيانات الصحيحة' : 'Join the community and begin your practice.';
+}
+
+function togglePwd(btn) {
+    // 1. الجافا سكريبت بيمسك الـ div (الأب) اللي شايل الزرار والـ input مع بعض
+    const inputGroup = btn.parentElement;
+    
+    // 2. بيدور جواه على الـ input اللي نوعه باسورود أو نص
+    const inp = inputGroup.querySelector('input');
+    
+    // 3. بيدور جواه على الأيقونة (وسم الـ i) عشان يغيرها
+    const eyeIcon = btn.querySelector('i');
+    
+    // 4. بيشوف حالة الحقل الحالي
+    const show = inp.type === 'password';
+    
+    // 5. بيقلب النوع (من باسورود لنص والعكس)
+    inp.type = show ? 'text' : 'password';
+    
+    // 6. بيغير كلاس الأيقونة بتاعة الزرار اللي اتداس عليه بس
+    if (show) {
+        eyeIcon.className = "fa-solid fa-eye-slash";
+    } else {
+        eyeIcon.className = "fa-solid fa-eye";
+    }
+}
+
+/* ── Password strength ───────────────────── */
+function checkStrength(val){
+  let score = 0;
+  if(val.length>=6)  score++;
+  if(val.length>=10) score++;
+  if(/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+  if(/[0-9]/.test(val) && /[^a-zA-Z0-9]/.test(val)) score++;
+  const bars  = [1,2,3,4].map(n=>document.getElementById('bar-'+n));
+  const texts = ['','Weak','Fair','Good','Strong'];
+  const cls   = ['','weak','medium','medium','strong'];
+  bars.forEach((b,i)=>{ b.className='pwd-bar'+(i<score?' '+cls[score]:''); });
+  document.getElementById('pwd-text').textContent = val ? texts[score]||'Weak' : 'Enter a password';
+}
+
+/* ── Error helpers ───────────────────────── */
+function setError(fieldId){ document.getElementById(fieldId).classList.add('has-error'); }
+function clearError(fieldId){ document.getElementById(fieldId).classList.remove('has-error'); }
+
+/* ── Login handler ───────────────────────── */
+function handleLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pwd   = document.getElementById('login-password').value;
+  let ok = true;
+  if(!email || !email.includes('@')){ setError('field-login-email'); ok=false; }
+  if(pwd.length<6){ setError('field-login-password'); ok=false; }
+  if(!ok) return;
+  const btn = document.getElementById('btn-login');
+  btn.classList.add('loading');
+  setTimeout(()=>{
+    btn.classList.remove('loading');
+    showToast('✅ Welcome back! Redirecting…');
+    setTimeout(()=>{ window.location.href='islamic-site.html'; }, 1800);
+  }, 1600);
+}
+
+/* ── Register handler ────────────────────── */
+function handleRegister(){
+  const name    = document.getElementById('reg-name').value.trim();
+  const email   = document.getElementById('reg-email').value.trim();
+  const pwd     = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  const terms   = document.getElementById('accept-terms').checked;
+  let ok = true;
+  if(!name){  setError('field-reg-name');    ok=false; }
+  if(!email||!email.includes('@')){ setError('field-reg-email'); ok=false; }
+  if(pwd.length<6){ setError('field-reg-password'); ok=false; }
+  if(pwd!==confirm){ setError('field-reg-confirm'); ok=false; }
+  if(!terms){ showToast('⚠ Please accept the terms to continue.'); ok=false; }
+  if(!ok) return;
+  const btn = document.getElementById('btn-register');
+  btn.classList.add('loading');
+  setTimeout(()=>{
+    btn.classList.remove('loading');
+    showToast('✅ Account created! Welcome to My Site.');
+    setTimeout(()=>{ window.location.href='islamic-site.html'; }, 1800);
+  }, 1800);
+}
+
+/* ── Forgot password ─────────────────────── */
+function openForgot(){ document.getElementById('forgot-overlay').classList.add('open'); document.getElementById('forgot-email').focus(); }
+function closeForgot(){ document.getElementById('forgot-overlay').classList.remove('open'); }
+function sendReset(){
+  const email = document.getElementById('forgot-email').value.trim();
+  if(!email||!email.includes('@')){ showToast('⚠ Enter a valid email first.'); return; }
+  closeForgot();
+  showToast('📧 Reset link sent! Check your inbox.');
+}
+document.getElementById('forgot-overlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeForgot(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeForgot(); });
+
+/* ── Toast ───────────────────────────────── */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ── Enter key submit ────────────────────── */
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const active = document.querySelector('.form-panel.active');
+  if(!active) return;
+  if(active.id==='panel-login')    handleLogin();
+  if(active.id==='panel-register') handleRegister();
+});
+// الكود ده هيشتغل لوحده أول ما الصفحة تفتح
+document.addEventListener("DOMContentLoaded", function () {
+    // بيمسك كل حقول الباسورد اللي في الصفحة
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    
+    passwordInputs.forEach(input => {
+        // بيغير الـ autocomplete لـ new-password عشان يمنع أيقونة المتصفح الرخمة
+        input.setAttribute('autocomplete', 'new-password');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Site — نور الإسلام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+:root {
+  --gold:      #D4AF37;
+  --gold-dark: #B8860B;
+  --gold-soft: #e8c84a;
+  --white:     #FFFFFF;
+  --bg:        #FFF8E7;
+  --bg2:       #FFF2D0;
+  --bg3:       #FDE8A8;
+  --ink:       #2C1A00;
+  --ink2:      #5C3D00;
+  --muted:     #9A7A3A;
+  --border:    rgba(212,175,55,.22);
+  --border-md: rgba(212,175,55,.4);
+  --shadow:    rgba(184,134,11,.15);
+  --serif:     'Cinzel', serif;
+  --body:      'Lato', sans-serif;
+  --arabic:    'Amiri', serif;
+  --trans:     .3s cubic-bezier(.4,0,.2,1);
+  --radius:    12px;
+}
+html { 
+    scroll-behavior: smooth; 
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+nav {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 200;
+  background: rgba(255,248,231,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 0 32px;
+  height: 60px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 2.2rem; 
+  font-weight: 700;
+  color: var(--gold-dark);
+  letter-spacing: .08em;
+}
+.nav-links { 
+    display: flex; 
+    gap: 15px; 
+}
+.nav-links a {
+  font-size: 1rem; 
+  font-weight: 400;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: var(--ink2);
+  padding: 6px 12px; 
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background var(--trans), color var(--trans);
+}
+.nav-links a:hover,
+.nav-links a.active{ 
+    background: var(--bg3); 
+    color: var(--gold-dark); 
+}
+.nav-inner .login{
+  width: max-content;
+  padding: 6px 12px 6px 12px;
+  background-color: #B8860B;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+}
+section { 
+    padding: 80px 0; 
+}
+.container { 
+    max-width: 1100px;
+    margin: 0 auto; 
+    padding: 0 32px; 
+}
+.section-label {
+  text-align: center; 
+  margin-bottom: 48px;
+}
+.section-label-tag {
+  font-size: .7rem; 
+  font-weight: 400;
+  letter-spacing: .22em; 
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.section-label-tag::before,
+.section-label-tag::after {
+  content: ''; 
+  flex: 0 0 32px; 
+  height: 1px; 
+  background: var(--border-md);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 3.5vw, 2.2rem);
+  font-weight: 700; 
+  color: var(--gold-dark);
+  letter-spacing: .04em;
+}
+.section-ornament {
+  display: block; 
+  text-align: center;
+  font-size: 1.3rem; 
+  color: var(--gold);
+  margin-top: 6px; 
+  line-height: 1;
+}
+.qibla-section { 
+    background: var(--bg); 
+    opacity: 0;
+    animation: qibla 2.5s ease forwards;
+}
+.qibla-inner {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 45px;
+}
+.qibla-compass-wrap {
+  position: relative; 
+  width: 260px; 
+  height: 260px;
+}
+.qibla-compass-bg {
+  width: 100%; 
+  height: 100%; 
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--bg2), var(--bg3));
+  border: 2px solid var(--border-md);
+  box-shadow: 0 8px 32px var(--shadow), inset 0 2px 8px rgba(212,175,55,.1);
+  position: relative;
+}
+
+.compass-marks {
+  position: absolute; 
+  inset: 0;
+}
+.compass-label {
+  position: absolute; 
+  font-family: var(--serif); 
+  font-size: .75rem;
+  font-weight: 700; 
+  color: var(--gold-dark);
+}
+.compass-label.n { 
+    top: 12px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+.compass-label.s { 
+    bottom: 12px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+.compass-label.e { 
+    right: 14px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+.compass-label.w { 
+    left: 14px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+.qibla-arrow {
+  position: absolute; 
+  top: 50%; 
+  left: 50%;
+  width: 4px; 
+  height: 90px;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(48deg);
+  background: linear-gradient(to top, var(--gold-dark), var(--gold));
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 8px rgba(212,175,55,.5);
+  transition: transform 1s cubic-bezier(.34,1.56,.64,1);
+}
+.qibla-arrow::before {
+  content: '🕋';
+  position: absolute; 
+  top: -28px; 
+  left: 50%; 
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+}
+.qibla-center {
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  width: 14px; 
+  height: 14px; 
+  border-radius: 50%;
+  background: var(--gold-dark);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px rgba(212,175,55,.3);
+}
+.qibla-note {
+  text-align: center;
+  max-width: 400px;
+  font-size: .82rem; 
+  color: var(--muted); 
+  line-height: 1.7;
+}
+.qibla-note strong { 
+    color: var(--gold-dark);
+}
+.qibla-btn {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border: none; 
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-family: var(--body); 
+  font-size: 1.2rem;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: var(--white); 
+  cursor: pointer;
+  transition: transform var(--trans), box-shadow var(--trans);
+}
+.qibla-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 20px rgba(212,175,55,.4); 
+}
+@keyframes  qibla {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+}
+  to   { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+}
+footer {
+  background: var(--ink);
+  border-top: 2px solid var(--gold-dark);
+  padding: 48px 0 32px;
+  text-align: center;
+}
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 2.8rem; 
+  font-weight: 700;
+  color: var(--gold); 
+  letter-spacing: .08em;
+  margin-bottom: 8px;
+}
+.footer-bismillah {
+  font-family: var(--arabic);
+  font-size: 1.1rem; 
+  color: rgba(255,255,255,.5);
+  margin-bottom: 20px;
+}
+.footer-links {
+  display: flex; 
+  justify-content: center; 
+  gap: 24px; 
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.footer-links a {
+  font-size: .72rem; 
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  transition: color var(--trans);
+  text-decoration: none;
+}
+.footer-links a:hover { 
+    color: var(--gold); 
+}
+.footer-copy {
+  font-size: .7rem; 
+  color: rgba(255,255,255,.25);
+  letter-spacing: .08em;
+}
+
+body.js-reveal .reveal {
+  opacity: 0; 
+  transform: translateY(28px);
+  transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+}
+body.js-reveal .reveal.in { 
+    opacity: 1; transform: none; 
+}
+.reveal-d1 { 
+    transition-delay: .1s; 
+}
+.reveal-d2 { 
+    transition-delay: .2s; 
+}
+.reveal-d3 { 
+    transition-delay: .3s; 
+}
+.reveal-d4 { 
+    transition-delay: .4s; 
+}
+
+@media(max-width:720px){
+  .prayer-grid { 
+    grid-template-columns: repeat(2,1fr); 
+}
+  .stats-grid  { 
+    grid-template-columns: 1fr 1fr;
+ }
+  .container { 
+    padding: 0 16px; 
+}
+  .nav-links { 
+    display: none; 
+}
+  .message-banner { 
+    padding: 28px 20px; 
+}
+  .dhikr-card { 
+    flex-direction: column; 
+}
+}
+@media(max-width:480px){
+  .prayer-grid { 
+    grid-template-columns: 1fr 1fr; 
+}
+  .stats-grid  { 
+    grid-template-columns: 1fr;
+}
+}
+</style>
+</head>
+<body>
+    <nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <span class="nav-logo">مُصَلِّي</span>
+    <div class="nav-links">
+      <a href="index.html #prayer">الصفحة الرئيسية</a>
+      <a href="Quran.html">القرأن</a>
+      <a href="Adhkar.html">الأذكار</a>
+      <a href="index.html #duas">أدعية</a>
+      <a href="#" class="active">القبلة</a>
+      <a href="99 Names of Allah.html">أسماء اللَّهُ الحسنى</a>
+      <a href="sbha.html">السبحة</a>
+      <a href="index.html #stats">الاِحصائيات</a>
+    </div>
+    <a href="Islamic login.html" class="login">Login</a>
+  </div>
+</nav>
+    <section id="qibla" class="qibla-section">
+  <div class="container">
+    <div class="section-label reveal">
+      <div class="section-label-tag">Qibla Direction</div>
+      <h2 class="section-title">القبلة</h2>
+      <span class="section-ornament">❁</span>
+    </div>
+    <div class="qibla-inner reveal">
+      <div class="qibla-compass-wrap">
+        <div class="qibla-compass-bg">
+          <div class="compass-marks">
+            <span class="compass-label n">N</span>
+            <span class="compass-label s">S</span>
+            <span class="compass-label e">E</span>
+            <span class="compass-label w">W</span>
+          </div>
+          <div class="qibla-arrow" id="qibla-arrow" aria-label="Qibla direction arrow"></div>
+          <div class="qibla-center"></div>
+        </div>
+      </div>
+      <button class="qibla-btn" onclick="animateQibla()">🕋 أعرف قبلتك</button>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">مُصَلِّي</div>
+  <div class="footer-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="Quran.html">Quran</a>
+    <a href="Adhkar.html">Adhkar</a>
+    <a href="index.html #duas">Duas</a>
+    <a href="#" class="active">Qibla</a>
+    <a href="99 Names of Allah.html">Names</a>
+    <a href="sbha.html">Tasbih</a>
+    <a href="index.html #stats">Statistics</a>
+  </div>
+  <div class="footer-copy">May Allah accept our deeds — آمين</div>
+</footer>
+<script>
+    function animateQibla(){
+
+  const arrow = document.getElementById('qibla-arrow');
+  if (!arrow) return;
+
+  // 🔐 طلب إذن الموقع بشكل واضح
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported on this device.");
+    return;
+  }
+
+  // رسالة قبل الطلب (اختياري بس مهم لتجربة المستخدم)
+  const ask = confirm("Allow location access to calculate Qibla direction?");
+
+  if (!ask) {
+    alert("Location not enabled — showing default direction.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition((pos) => {
+
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    // 🕋 الكعبة
+    const kaabaLat = 21.4225;
+    const kaabaLon = 39.8262;
+
+    const dLon = (kaabaLon - lon) * Math.PI / 180;
+
+    const y = Math.sin(dLon) * Math.cos(kaabaLat * Math.PI / 180);
+    const x = Math.cos(lat * Math.PI / 180) * Math.sin(kaabaLat * Math.PI / 180) -
+              Math.sin(lat * Math.PI / 180) * Math.cos(kaabaLat * Math.PI / 180) * Math.cos(dLon);
+
+    let brng = Math.atan2(y, x) * 180 / Math.PI;
+
+    // تحويل للزاوية الصحيحة
+    brng = (brng + 360) % 360;
+
+    arrow.style.transform = `translate(-50%, -100%) rotate(${brng}deg)`;
+
+  }, (err) => {
+
+    if (err.code === 1) {
+      alert("You denied location access.");
+    } else {
+      alert("Unable to get location.");
+    }
+
+  });
+}
+function getStats(){ return JSON.parse(localStorage.getItem('islamicStats')||'{"tasbih":0,"prayers":0,"opens":0}'); }
+function saveStats(s){ localStorage.setItem('islamicStats',JSON.stringify(s)); }
+
+</script>
+</body>
+</html>

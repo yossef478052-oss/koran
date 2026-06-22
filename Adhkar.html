@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Site — نور الإسلام</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+:root {
+  --gold:      #D4AF37;
+  --gold-dark: #B8860B;
+  --gold-soft: #e8c84a;
+  --white:     #FFFFFF;
+  --bg:        #FFF8E7;
+  --bg2:       #FFF2D0;
+  --bg3:       #FDE8A8;
+  --ink:       #2C1A00;
+  --ink2:      #5C3D00;
+  --muted:     #9A7A3A;
+  --border:    rgba(212,175,55,.22);
+  --border-md: rgba(212,175,55,.4);
+  --shadow:    rgba(184,134,11,.15);
+  --serif:     'Cinzel', serif;
+  --body:      'Lato', sans-serif;
+  --arabic:    'Amiri', serif;
+  --trans:     .3s cubic-bezier(.4,0,.2,1);
+  --radius:    12px;
+}
+html { 
+    scroll-behavior: smooth; 
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+nav {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 200;
+  background: rgba(255,248,231,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 0 32px;
+  height: 60px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 2.2rem; 
+  font-weight: 700;
+  color: var(--gold-dark);
+  letter-spacing: .08em;
+}
+.nav-links { 
+    display: flex; 
+    gap: 15px; 
+}
+.nav-links a {
+  font-size: 1rem; 
+  font-weight: 400;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: var(--ink2);
+  padding: 6px 12px; 
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background var(--trans), color var(--trans);
+}
+.nav-links a:hover,
+.nav-links a.active{ 
+    background: var(--bg3); 
+    color: var(--gold-dark); 
+}
+.nav-inner .login{
+  width: max-content;
+  padding: 6px 12px 6px 12px;
+  background-color: #B8860B;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+}
+section { 
+    padding: 80px 0; 
+}
+.container { 
+    max-width: 700px;
+    margin: 0 auto; 
+    padding: 0 32px; 
+}
+.section-label {
+  text-align: center; 
+  margin-bottom: 48px;
+}
+.section-label-tag {
+  font-size: .7rem; 
+  font-weight: 400;
+  letter-spacing: .22em; 
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.section-label-tag::before,
+.section-label-tag::after {
+  content: ''; 
+  flex: 0 0 32px; 
+  height: 1px; 
+  background: var(--border-md);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 3.5vw, 2.2rem);
+  font-weight: 700; 
+  color: var(--gold-dark);
+  letter-spacing: .04em;
+}
+.section-ornament {
+  display: block; 
+  text-align: center;
+  font-size: 1.3rem; 
+  color: var(--gold);
+  margin-top: 6px; 
+  line-height: 1;
+}
+.adhkar-section { 
+    background: var(--bg2); 
+    border-top: 1px solid var(--border); 
+    border-bottom: 1px solid var(--border); 
+    opacity: 0;
+    animation: fadeSlideUp 2.5s ease forwards; 
+}
+.adhkar-tabs {
+  display: flex; 
+  justify-content: center; 
+  gap: 8px;
+  margin-bottom: 36px; 
+  flex-wrap: wrap;
+}
+.adhkar-tab {
+  font-family: var(--body); 
+  font-size: 1rem; 
+  font-weight: 400;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  padding: 10px 24px; 
+  border-radius: 50px;
+  border: 1.5px solid var(--border-md);
+  background: transparent; 
+  color: var(--muted);
+  cursor: pointer; 
+  transition: all var(--trans);
+}
+.adhkar-tab.active,
+.adhkar-tab:hover {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border-color: var(--gold); color: var(--white);
+}
+.adhkar-panel { 
+    display: none; 
+}
+.adhkar-panel.active { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+}
+@keyframes fadeSlideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+}
+  to   { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+}
+.dhikr-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  display: flex; 
+  align-items: flex-start; 
+  gap: 20px;
+  transition: box-shadow var(--trans);
+}
+.dhikr-card:hover { 
+    box-shadow: 0 6px 24px var(--shadow); 
+}
+.dhikr-counter-wrap { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 6px; flex-shrink: 0; 
+}
+.dhikr-counter {
+  width: 48px; 
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-family: var(--serif); 
+  font-size: 1rem; 
+  font-weight: 700; 
+  color: var(--white);
+  cursor: pointer;
+  transition: transform var(--trans), box-shadow var(--trans);
+  user-select: none;
+}
+.dhikr-counter:hover { 
+    transform: scale(1.1); 
+    box-shadow: 0 4px 16px rgba(212,175,55,.5); 
+}
+.dhikr-counter:active { 
+    transform: scale(.94); 
+}
+.dhikr-count-num { 
+    font-size: .68rem; 
+    color: var(--muted); 
+    letter-spacing: .08em; 
+}
+.dhikr-body { 
+    flex: 1; 
+}
+.dhikr-arabic {
+  font-family: var(--arabic);
+  font-size: 1.4rem; 
+  line-height: 1.8;
+  color: var(--ink); 
+  margin-bottom: 8px;
+  direction: rtl; 
+  text-align: right;
+}
+.dhikr-translation { 
+    font-size: .82rem; 
+    color: var(--muted); 
+    line-height: 1.65; 
+    font-style: italic; 
+}
+.dhikr-times {
+  margin-top: 10px;
+  font-size: .7rem; 
+  font-weight: 400;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  background: rgba(212,175,55,.1);
+  border-radius: 6px; 
+  padding: 4px 10px;
+  display: inline-block;
+}
+footer {
+  background: var(--ink);
+  border-top: 2px solid var(--gold-dark);
+  padding: 48px 0 32px;
+  text-align: center;
+
+}
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 2.8rem; 
+  font-weight: 700;
+  color: var(--gold); 
+  letter-spacing: .08em;
+  margin-bottom: 8px;
+}
+.footer-bismillah {
+  font-family: var(--arabic);
+  font-size: 1.1rem; 
+  color: rgba(255,255,255,.5);
+  margin-bottom: 20px;
+}
+.footer-links {
+  display: flex; 
+  justify-content: center; 
+  gap: 24px; 
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.footer-links a {
+  font-size: .72rem; 
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  transition: color var(--trans);
+  text-decoration: none;
+}
+.footer-links a:hover { 
+    color: var(--gold); 
+}
+.footer-copy {
+  font-size: .7rem; 
+  color: rgba(255,255,255,.25);
+  letter-spacing: .08em;
+}
+
+body.js-reveal .reveal {
+  opacity: 0; 
+  transform: translateY(28px);
+  transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+}
+body.js-reveal .reveal.in { 
+    opacity: 1; transform: none; 
+}
+.reveal-d1 { 
+    transition-delay: .1s; 
+}
+.reveal-d2 { 
+    transition-delay: .2s; 
+}
+.reveal-d3 { 
+    transition-delay: .3s; 
+}
+.reveal-d4 { 
+    transition-delay: .4s; 
+}
+
+@media(max-width:720px){
+  .prayer-grid { 
+    grid-template-columns: repeat(2,1fr); 
+}
+  .stats-grid  { 
+    grid-template-columns: 1fr 1fr;
+ }
+  .container { 
+    padding: 0 16px; 
+}
+  .nav-links { 
+    display: none; 
+}
+  .message-banner { 
+    padding: 28px 20px; 
+}
+  .dhikr-card { 
+    flex-direction: column; 
+}
+}
+@media(max-width:480px){
+  .prayer-grid { 
+    grid-template-columns: 1fr 1fr; 
+}
+  .stats-grid  { 
+    grid-template-columns: 1fr;
+}
+}
+.hidden {
+  display: none;
+}
+
+.done {
+  opacity: 0.5;
+  transform: scale(0.95);
+  transition: 0.5s;
+}
+
+.again-btn{
+  cursor: pointer;
+  margin-top: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #B8860B;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  opacity: 1 !important;
+}
+</style>
+</head>
+<body>
+    <nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <span class="nav-logo">مُصَلِّي</span>
+    <div class="nav-links">
+      <a href="index.html">الصفحة الرئيسية</a>
+      <a href="Quran.html">القرأن</a>
+      <a href="#" class="active">الأذكار</a>
+      <a href="index.html #duas">أدعية</a>
+      <a href="Qibla Direction.html">القبلة</a>
+      <a href="99 Names of Allah.html">أسماء اللَّهُ الحسنى</a>
+      <a href="sbha.html">السبحة</a>
+      <a href="index.html #stats">الاِحصائيات</a>
+    </div>
+    <a href="Islamic login.html" class="login">Login</a>
+  </div>
+</nav>
+    <section id="adhkar" class="adhkar-section">
+  <div class="container">
+    <div class="section-label reveal">
+      <div class="section-label-tag">Adhkar</div>
+      <h2 class="section-title">الأذكار</h2>
+      <span class="section-ornament">❁</span>
+    </div>
+    <div class="adhkar-tabs reveal">
+      <button class="adhkar-tab active" onclick="switchAdhkar('morning', this)">🌅 أذكار الصباح</button>
+      <button class="adhkar-tab" onclick="switchAdhkar('evening', this)">🌙 أذكار المساء</button>
+      <button class="adhkar-tab" onclick="switchAdhkar('sleep', this)">😴 أذكار ما قبل النوم</button>
+    </div>
+    <!-- Morning -->
+    <div class="adhkar-panel active" id="adhkar-morning">
+      <div class="dhikr-card reveal">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="3" aria-label="Count dhikr">3</div>
+          <span class="dhikr-count-num">/ 3x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ</div>
+          <div class="dhikr-translation">"We have reached the morning and at this very time all sovereignty belongs to Allah, and all praise is for Allah."</div>
+          <span class="dhikr-times">3 times</span>
+        </div>
+      </div>
+      <div class="dhikr-card reveal reveal-d1">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="3" aria-label="Count dhikr">3</div>
+          <span class="dhikr-count-num">/ 3x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ</div>
+          <div class="dhikr-translation">"O Allah, by You we enter the morning and by You we enter the evening, by You we live and by You we die, and to You is the resurrection."</div>
+          <span class="dhikr-times">1 time</span>
+        </div>
+       
+      </div>
+      <div class="dhikr-card reveal reveal-d2">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="100" aria-label="Count dhikr">100</div>
+          <span class="dhikr-count-num">/ 100x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</div>
+          <div class="dhikr-translation">"Glory be to Allah and His is the praise." — Whoever says this 100 times, their sins will be forgiven even if they were as much as the foam of the sea.</div>
+          <span class="dhikr-times">100 times</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="adhkar-panel" id="adhkar-evening">
+      <div class="dhikr-card reveal">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="3" aria-label="Count dhikr">3</div>
+          <span class="dhikr-count-num">/ 3x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ</div>
+          <div class="dhikr-translation">"We have reached the evening and at this very time all sovereignty belongs to Allah, and all praise is for Allah."</div>
+          <span class="dhikr-times">3 times</span>
+        </div>
+      </div>
+      <div class="dhikr-card reveal reveal-d1">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="3" aria-label="Count dhikr">3</div>
+          <span class="dhikr-count-num">/ 3x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ</div>
+          <div class="dhikr-translation">"I seek refuge in the perfect words of Allah from the evil of what He has created."</div>
+          <span class="dhikr-times">3 times</span>
+        </div>
+      </div>
+      <div class="dhikr-card reveal reveal-d2">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="3" aria-label="Count dhikr">3</div>
+          <span class="dhikr-count-num">/ 3x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي</div>
+          <div class="dhikr-translation">"O Allah, grant my body health. O Allah, grant my hearing health. O Allah, grant my sight health."</div>
+          <span class="dhikr-times">3 times</span>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="adhkar-panel" id="adhkar-sleep">
+      <div class="dhikr-card reveal">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="1" aria-label="Count dhikr">1</div>
+          <span class="dhikr-count-num">/ 1x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا</div>
+          <div class="dhikr-translation">"In Your name O Allah, I die and I live."</div>
+          <span class="dhikr-times">Before sleep</span>
+        </div>
+      </div>
+      <div class="dhikr-card reveal reveal-d1">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="33" aria-label="Count dhikr">33</div>
+          <span class="dhikr-count-num">/ 33x each</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">سُبْحَانَ اللَّه · الْحَمْدُ لِلَّه · اللَّهُ أَكْبَر</div>
+          <div class="dhikr-translation">SubhanAllah (33) · Alhamdulillah (33) · Allahu Akbar (34) — The Tasbih of Fatimah, recited before sleep.</div>
+          <span class="dhikr-times">33 · 33 · 34</span>
+        </div>
+      </div>
+      <div class="dhikr-card reveal reveal-d2">
+        <div class="dhikr-counter-wrap">
+          <div class="dhikr-counter" onclick="countDhikr(this)" role="button" tabindex="0" data-original="1" aria-label="Count dhikr">1</div>
+          <span class="dhikr-count-num">/ 1x</span>
+          <button class="again-btn hidden" onclick="resetDhikr(this)">
+    Again
+  </button>
+        </div>
+        <div class="dhikr-body">
+          <div class="dhikr-arabic">اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ</div>
+          <div class="dhikr-translation">"O Allah, protect me from Your punishment on the Day You resurrect Your servants."</div>
+          <span class="dhikr-times">3 times</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">مُصَلِّي</div>
+  <div class="footer-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="Quran.html">Quran</a>
+    <a href="#">Adhkar</a>
+    <a href="index.html #duas">Duas</a>
+    <a href="Qibla Direction.html">Qibla</a>
+    <a href="99 Names of Allah.html">Names</a>
+    <a href="sbha.html">Tasbih</a>
+    <a href="index.html #stats">Statistics</a>
+  </div>
+  <div class="footer-copy">May Allah accept our deeds — آمين</div>
+</footer>
+<script>
+    function filterSurahs(q){
+  const filtered = SURAHS.filter(s =>
+    s.en.toLowerCase().includes(q.toLowerCase()) ||
+    s.ar.includes(q)
+  );
+  renderSurahs(filtered);
+}
+
+
+function playSurah(num){
+  alert(`In a full implementation, this would stream Surah #${num} from an audio API.\nReciter: Sheikh Mishary Rashid Al-Afasy`);
+}
+
+function switchAdhkar(panel, btn){
+  document.querySelectorAll('.adhkar-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.adhkar-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('adhkar-'+panel).classList.add('active');
+  btn.classList.add('active');
+}
+
+function countDhikr(el){
+
+  let n = Number(el.textContent);
+  const original = Number(el.dataset.original);
+
+  if (n <= 0) return;
+
+  n--;
+
+  el.textContent = n;
+
+  const card = el.closest(".dhikr-card");
+  const btn = card.querySelector(".again-btn");
+
+  // لما يوصل للصفر
+  if (n === 0) {
+
+    card.classList.add("done");
+
+    if (btn) {
+      btn.classList.remove("hidden");
+    }
+
+    // قفل الضغط تمامًا
+    el.style.pointerEvents = "none";
+  }
+}
+
+function resetDhikr(btn){
+
+  const card = btn.closest(".dhikr-card");
+  const counter = card.querySelector(".dhikr-counter");
+
+  const original = Number(counter.dataset.original);
+
+  counter.textContent = original;
+
+  card.classList.remove("done");
+
+  btn.classList.add("hidden");
+
+  // إعادة تفعيل الضغط
+  counter.style.pointerEvents = "auto";
+}
+function animateQibla(){
+  const arrow = document.getElementById('qibla-arrow');
+  const deg = 130 + Math.random()*60;
+  arrow.style.transform = `translate(-50%, -100%) rotate(${deg}deg)`;
+  // If device orientation is available
+  if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function'){
+    DeviceOrientationEvent.requestPermission().then(r=>{
+      if(r==='granted') alert('Compass enabled! Connect a real Qibla API for production.');
+    });
+  } else { alert('Arrow updated! Connect a geolocation + compass API to make this accurate.'); }
+}
+
+function getStats(){ return JSON.parse(localStorage.getItem('islamicStats')||'{"tasbih":0,"prayers":0,"opens":0}'); }
+function saveStats(s){ localStorage.setItem('islamicStats',JSON.stringify(s)); }
+function renderStats(){
+  const s = getStats();
+  document.getElementById('stat-tasbih').textContent  = s.tasbih;
+  document.getElementById('stat-prayers').textContent = s.prayers;
+  document.getElementById('stat-opens').textContent   = s.opens;
+}
+function addTasbih(){ const s=getStats(); s.tasbih++; saveStats(s); renderStats(); }
+function addPrayer(){ const s=getStats(); s.prayers++; saveStats(s); renderStats(); }
+function resetStats(){ if(confirm('Reset all statistics?')){ saveStats({tasbih:0,prayers:0,opens:0}); renderStats(); }}
+
+// Increment opens
+(function trackOpen(){
+  const s = getStats(); s.opens++; saveStats(s); renderStats();
+})();
+
+
+document.body.classList.add('js-reveal');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+},{threshold:.05, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+</script>
+</body>
+</html>
